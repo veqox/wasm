@@ -9,7 +9,7 @@ const fromRawParts = (ptr, len) => {
 const createComponent = (name, tag, template) => {
 	if (customElements.get(tag)) return;
 
-	const dynamicClass = new Function(`
+	const component = new Function(`
 		return class ${name} extends HTMLElement {
 			constructor() {
 				super();
@@ -18,7 +18,7 @@ const createComponent = (name, tag, template) => {
 			}
 		}`)();
 
-	customElements.define(tag, dynamicClass);
+	customElements.define(tag, component);
 };
 
 const wasm = await WebAssembly.instantiateStreaming(fetch("/wasm.wasm"), {
